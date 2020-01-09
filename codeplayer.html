@@ -1,0 +1,153 @@
+<html>
+	
+	<head>
+		
+		<title>Code Player</title>
+		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js">
+		</script>
+		<style type="text/css">
+			
+			body{
+				margin:0;
+				padding:0;
+				font-family:helvetica,arial;
+			}
+			#topBar{
+				width:100%;
+				height:25px;
+				background-color:#EDEDED;
+				padding:5px;
+			}
+			#logo{
+				padding-top:3px;
+				font-size:110%;
+				float:left;
+			}
+			#buttonContainer{
+				width:300px;
+				margin:0 auto;
+			}
+			.button{
+				font-size:13px;
+				font-weight:normal;
+				float:left;
+				border:1px #CCCCCC solid;
+				border-right:none;
+				padding:4.5px 6px;
+			}
+			#html{
+				border-radius:15% 0 0 15%;
+			}
+			#output{
+				border-right:1px solid #CCCCCC;
+				border-radius:0 15% 15% 0;
+			}
+			.activehover{
+				background-color:#F5F9FF;
+			}
+			.active{
+				background-color:#EBF3FF !important;
+			}
+			.justhover{
+				background-color:#E4E4E4;
+			}
+			textarea{
+				width:50%;
+				resize:none;
+				border-top:0px;
+				border-bottom:0px;
+				border-left:0px;
+				border-color:#CCCCCC;
+			}
+			iframe{
+				border:none;
+			}
+			.hidden{
+				display:none;
+			}
+			
+		</style>
+		
+	</head>
+	
+	<body>
+		<div id="topBar">
+			
+			<div id="logo">
+				Code Player
+			</div>
+			
+			<div id="buttonContainer">
+				
+				<div class="button active" id="html">HTML</div>
+				<div class="button" id="css">CSS</div>
+				<div class="button" id="js">JavaScript</div>
+				<div class="button active" id="output">Output</div>
+				
+			</div>
+			
+		</div>
+		<div id="bodyContainer">
+			
+			<textarea id="htmlPanel" class="panel"><p id="change">Hello World</p></textarea>
+			
+			<textarea id="cssPanel" class="panel hidden">p{color:green;}</textarea>
+			
+			<textarea id="jsPanel" class="panel hidden">document.getElementById("change").innerHTML = "Hi There";</textarea>
+			
+			<iframe id="outputPanel" class="panel"></iframe>
+		</div>
+		<script type="text/javascript">
+			
+			
+            function update() 
+			{
+                $("iframe").contents().find("html").html("<html><head><style type='text/css'>" + $("#cssPanel").val() + "</style></head><body>" + $("#htmlPanel").val() + "</body></html>");
+                document.getElementById("outputPanel").contentWindow.eval($("#jsPanel").val());
+            }
+			
+			$(".button").hover(function()
+			{
+				$(this).addClass("justhover");
+			},
+			function()
+			{
+				$(this).removeClass("justhover");
+			});
+			var p=true;
+			$(".button").click(function()
+			{
+				$(this).toggleClass("active");
+				$(this).removeClass("justhover");	
+				var panelId = $(this).attr("id") + "Panel"; 
+				$("#"+panelId).toggleClass("hidden");
+				var activePanels = 4 - $(".hidden").length;
+				$(".panel").width($(window).width()/activePanels - 10);
+			});
+			
+			$(".panel").height($(window).height()-$("#topBar").height()-14.25);
+			$(".panel").width($(window).width()/2 - 10);
+			
+			update();
+			
+			$("textarea").on('change keyup paste',function()
+			{
+				update();
+			});
+			
+			
+			
+		</script>
+		
+	</body>
+	
+</html>
+
+
+
+
+
+
+
+
